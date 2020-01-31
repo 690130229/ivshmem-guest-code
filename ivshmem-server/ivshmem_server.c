@@ -95,7 +95,7 @@ int main(int argc, char ** argv)
             perror("select()");
         }
 
-        handle = find_set(&readset, s->maxfd + 1);
+        handle = find_set(&readset, s->maxfd + 1);//only one?
         if (handle == -1) continue;
 
         if (handle == s->conn_socket) {
@@ -178,7 +178,7 @@ void add_new_guest(server_state_t * s) {
 
     new_posn = s->total_count;
 
-    if (new_posn == s->nr_allocated_vms) {
+    if (new_posn == s->nr_allocated_vms) {//find the position and increase it.
         printf("increasing vm slots\n");
         s->nr_allocated_vms = s->nr_allocated_vms * 2;
         if (s->nr_allocated_vms < 16)
@@ -192,21 +192,21 @@ void add_new_guest(server_state_t * s) {
         }
     }
 
-    s->live_vms[new_posn].posn = new_posn;
+    s->live_vms[new_posn].posn = new_posn; // the live_vms position
     printf("[NC] Live_vms[%ld]\n", new_posn);
     s->live_vms[new_posn].efd = (int *) malloc(sizeof(int));
     for (i = 0; i < s->msi_vectors; i++) {
-        s->live_vms[new_posn].efd[i] = eventfd(0, 0);
+        s->live_vms[new_posn].efd[i] = eventfd(0, 0);// give the notification fds.
         printf("\tefd[%ld] = %d\n", i, s->live_vms[new_posn].efd[i]);
     }
-    s->live_vms[new_posn].sockfd = vm_sock;
+    s->live_vms[new_posn].sockfd = vm_sock; //sock for communication
     s->live_vms[new_posn].alive = 1;
 
 
-    sendPosition(vm_sock, new_posn);
-    sendUpdate(vm_sock, neg1, sizeof(long), s->shm_fd);
+    sendPosition(vm_sock, new_posn); // send the postion to guest vm.
+    sendUpdate(vm_sock, neg1, sizeof(long), s->shm_fd);// each guest use the same shm_fd ?
     printf("[NC] trying to send fds to new connection\n");
-    sendRights(vm_sock, new_posn, sizeof(new_posn), s->live_vms, s->msi_vectors);
+    sendRights(vm_sock, new_posn, sizeof(new_posn), s->live_vms, s->msi_vectors);//remember each guest's vectors.
 
     printf("[NC] Connected (count = %ld).\n", new_posn);
     for (i = 0; i < new_posn; i++) {
@@ -216,7 +216,7 @@ void add_new_guest(server_state_t * s) {
             for (j = 0; j < s->msi_vectors; j++) {
                 printf("\tefd[%ld] = [%d]", j, s->live_vms[new_posn].efd[j]);
                 sendUpdate(s->live_vms[i].sockfd, new_posn,
-                        sizeof(new_posn), s->live_vms[new_posn].efd[j]);
+                        sizeof(new_posn), s->live_vms[new_posn].efd[j]);//tell other guest my vectors?
             }
             printf("\n");
         }

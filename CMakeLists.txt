@@ -1,0 +1,141 @@
+cmake_minimum_required(VERSION 3.13)
+project(ivshmem_code)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(ivshmem-server)
+include_directories(tests/FTP/Java)
+include_directories(tests/FTP/VM)
+include_directories(tests/Interrupts/VM)
+include_directories(tests/Java/JNI)
+include_directories(uio/benchmarks/VM/coyote)
+include_directories(uio/tests/Interrupts/VM)
+
+add_executable(ivshmem_code
+        ivshmem-server/ivshmem_server.c
+        ivshmem-server/Makefile
+        ivshmem-server/README
+        ivshmem-server/send_scm.c
+        ivshmem-server/send_scm.h
+        kernel_module/standard/kvm_ivshmem.c
+        kernel_module/standard/kvm_ivshmem.c.orig
+        kernel_module/standard/Makefile
+        kernel_module/uio/Makefile
+        kernel_module/uio/uio_ivshmem.c
+        kernel_module/USE_THE_UIO_DRIVER
+        scripts/getleases
+        scripts/networkingCommands
+        startup_files/nahanni.fedora
+        startup_files/nahanni.suse
+        startup_files/nahanni.ubuntu
+        startup_files/nahanni.uio_pci
+        tests/DumpSum/Host/dump.c
+        tests/DumpSum/Host/Makefile
+        tests/DumpSum/Host/pySum.py
+        tests/DumpSum/Host/shared_memory.c
+        tests/DumpSum/Host/sum.c
+        tests/DumpSum/Host/sum_host.c
+        tests/DumpSum/Host/unlink_mem.c
+        tests/DumpSum/VM/dump.c
+        tests/DumpSum/VM/Makefile
+        tests/DumpSum/VM/mmap.py
+        tests/DumpSum/VM/readsum.c
+        tests/DumpSum/VM/sum.c
+        tests/DumpSum/VM/test_shmem.c
+        tests/DumpSum/VM/unlink_mem.c
+        tests/DumpSum/VM/writedump.c
+        tests/FTP/Java/old/FTPPrep.java
+        tests/FTP/Java/old/FTPRecv.java
+        tests/FTP/Java/old/IrqTest.java
+        tests/FTP/Java/org/ualberta/shm/Handler.java
+        tests/FTP/Java/org/ualberta/shm/MemAccess.java
+        tests/FTP/Java/org/ualberta/shm/Shm.java
+        tests/FTP/Java/org/ualberta/shm/ShmConnection.java
+        tests/FTP/Java/org/ualberta/shm/ShmInputStream.java
+        tests/FTP/Java/org/ualberta/shm/ShmOutputStream.java
+        tests/FTP/Java/org/ualberta/shm/ShmPrep.java
+        tests/FTP/Java/org/ualberta/shm/ShmServer.java
+        tests/FTP/Java/Getter.java
+        tests/FTP/Java/ivshmem.c
+        tests/FTP/Java/ivshmem.h
+        tests/FTP/Java/Makefile
+        tests/FTP/Java/MemAccess.c
+        tests/FTP/VM/CMakeLists.txt
+        tests/FTP/VM/ftp.h
+        tests/FTP/VM/ftp_recv.c
+        tests/FTP/VM/ftp_send.c
+        tests/FTP/VM/ivshmem.c
+        tests/FTP/VM/ivshmem.h
+        tests/FTP/VM/Makefile
+        tests/FTP/VM/sendioctl.c
+        tests/Interrupts/VM/CMakeLists.txt
+        tests/Interrupts/VM/dump_sema.c
+        tests/Interrupts/VM/getident.c
+        tests/Interrupts/VM/ivshmem.c
+        tests/Interrupts/VM/ivshmem.h
+        tests/Interrupts/VM/Makefile
+        tests/Interrupts/VM/sendioctl.c
+        tests/Interrupts/VM/sum_sema.c
+        tests/Java/JNI/Arguments.java
+        tests/Java/JNI/HexConversions.java
+        tests/Java/JNI/ivshmem.c
+        tests/Java/JNI/ivshmem.h
+        tests/Java/JNI/Makefile
+        tests/Java/JNI/MemAccess.cpp
+        tests/Java/JNI/MemAccess.java
+        tests/Java/JNI/nativelib.c
+        tests/Java/JNI/nativetest.c
+        tests/Java/JNI/nativetest.h
+        tests/Java/JNI/nativetest.java
+        tests/Java/JNI/ReadFile.h
+        tests/Java/JNI/ReadFile.java
+        tests/Java/FileInputDemo.java
+        tests/Java/HexConversions.java
+        tests/Java/MappedFile.java
+        tests/Java/RAF.java
+        tests/Java/SocketTest.java
+        tests/Java/test
+        tests/Semaphores/Host/grablock.c
+        tests/Semaphores/Host/Makefile
+        tests/Semaphores/Host/testlock.c
+        tests/Semaphores/VM/guestlock.c
+        tests/Semaphores/VM/Makefile
+        tests/Semaphores/VM/sendioctl.c
+        tests/Semaphores/VM/trylock.c
+        tests/Spinlocks/Host/grablock.c
+        tests/Spinlocks/Host/Makefile
+        tests/Spinlocks/Host/testlock.c
+        tests/Spinlocks/VM/guestlock.c
+        tests/Spinlocks/VM/Makefile
+        tests/Spinlocks/VM/sendioctl.c
+        tests/Spinlocks/VM/trylock.c
+        uio/benchmarks/VM/coyote/client.c
+        uio/benchmarks/VM/coyote/CMakeLists.txt
+        uio/benchmarks/VM/coyote/getident.c
+        uio/benchmarks/VM/coyote/ivshmem.c
+        uio/benchmarks/VM/coyote/ivshmem.h
+        uio/benchmarks/VM/coyote/Makefile
+        uio/benchmarks/VM/coyote/README
+        uio/benchmarks/VM/coyote/server.c
+        uio/tests/DumpSum/dump.c
+        uio/tests/DumpSum/Makefile
+        uio/tests/DumpSum/pyChkZero.py
+        uio/tests/DumpSum/sum.c
+        uio/tests/Interrupts/VM/CMakeLists.txt
+        uio/tests/Interrupts/VM/dump_sema.c
+        uio/tests/Interrupts/VM/getident.c
+        uio/tests/Interrupts/VM/ivshmem.c
+        uio/tests/Interrupts/VM/ivshmem.h
+        uio/tests/Interrupts/VM/sum_sema.c
+        uio/tests/Interrupts/VM/uio_read.c
+        uio/tests/Interrupts/VM/uio_send.c
+        COPYING
+        device_spec.txt
+        README)
+
+add_executable(ivshmem_server
+        ivshmem-server/ivshmem_server.c
+        ivshmem-server/send_scm.c
+        ivshmem-server/send_scm.h)
+
+TARGET_LINK_LIBRARIES(ivshmem_server rt)

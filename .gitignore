@@ -18,3 +18,5 @@ uio/tests/Interrupts/VM/uio_send
 *.so
 *.o
 .*.sw*
+cmake-build-debug
+.idea
